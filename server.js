@@ -4,16 +4,13 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
+const MenuItem = require("./models/menuItem");
+//const Booking = require("./models/booking");
 
 //Importera rutter
 const authRoutes = require("./routes/authRoutes");
 const menuRoutes = require("./routes/menuRoutes");
-const bookingRoutes = require("./routes/bookingRoutes");
-
-//Användarmodeller
-//user
-//menuitem
-//order
+//const bookingRoutes = require("./routes/bookingRoutes");
 
 //Init express
 const app = express();
@@ -25,26 +22,18 @@ app.use(cors());
 
 //Routes
 app.use("/api", authRoutes);
-app.use("/api", authenticateToken, menuRoutes);
-app.use("/api", authenticateToken, bookingRoutes);
+app.use("/api/menu", authenticateToken, menuRoutes);
+//app.use("/api", authenticateToken, bookingRoutes);
 
-
-                                    // //Skyddad routes
-                                    // app.get("/api/protected", authenticateToken, (req, res) => {
-                                    //     res.json({ message: "Skyddad route. " });
-                                    // });
-
-                                    // app.get("/api/menu", authenticateToken, (req, res) => {
-                                    //     res.json({ message: "Skyddad route. " });
-                                    // });
-
-                                    // app.get("/api/addmenu", authenticateToken, (req, res) => {
-                                    //     res.json({ message: "Skyddad route. " });
-                                    // });
-
-                                    // app.get("/api/booking", authenticateToken, (req, res) => {
-                                    //     res.json({ message: "Skyddad route. " });
-                                    // });
+//Oskyddad meny-route för besökare
+app.get("/api/customermenu", async (req, res) => {
+    try {
+        const items = await MenuItem.find();
+        res.json(items);
+    } catch (error) {
+        res.status(500).json({ message: "Serverfel vid hämtning av menyn." });
+    }
+});
 
 //Middleware för att validera token
 function authenticateToken(req, res, next) {
