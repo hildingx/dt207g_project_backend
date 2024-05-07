@@ -4,7 +4,11 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
+
+//Importera rutter
 const authRoutes = require("./routes/authRoutes");
+const menuRoutes = require("./routes/menuRoutes");
+const bookingRoutes = require("./routes/bookingRoutes");
 
 //Användarmodeller
 //user
@@ -21,23 +25,26 @@ app.use(cors());
 
 //Routes
 app.use("/api", authRoutes);
+app.use("/api", authenticateToken, menuRoutes);
+app.use("/api", authenticateToken, bookingRoutes);
 
-//Skyddad routes
-app.get("/api/protected", authenticateToken, (req, res) => {
-    res.json({ message: "Skyddad route. " });
-});
 
-app.get("/api/menu", authenticateToken, (req, res) => {
-    res.json({ message: "Skyddad route. " });
-});
+                                    // //Skyddad routes
+                                    // app.get("/api/protected", authenticateToken, (req, res) => {
+                                    //     res.json({ message: "Skyddad route. " });
+                                    // });
 
-app.get("/api/addmenu", authenticateToken, (req, res) => {
-    res.json({ message: "Skyddad route. " });
-});
+                                    // app.get("/api/menu", authenticateToken, (req, res) => {
+                                    //     res.json({ message: "Skyddad route. " });
+                                    // });
 
-app.get("/api/booking", authenticateToken, (req, res) => {
-    res.json({ message: "Skyddad route. " });
-});
+                                    // app.get("/api/addmenu", authenticateToken, (req, res) => {
+                                    //     res.json({ message: "Skyddad route. " });
+                                    // });
+
+                                    // app.get("/api/booking", authenticateToken, (req, res) => {
+                                    //     res.json({ message: "Skyddad route. " });
+                                    // });
 
 //Middleware för att validera token
 function authenticateToken(req, res, next) {
