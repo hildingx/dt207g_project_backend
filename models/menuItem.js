@@ -21,6 +21,10 @@ const menuItemSchema = new mongoose.Schema({
         enum: ['starter', 'main course', 'dessert', 'drink'],
         required: true,
         trim: true
+    },
+    created_at: { 
+        type: Date, 
+        default: Date.now
     }
 });
 

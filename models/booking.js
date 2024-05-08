@@ -23,6 +23,10 @@ const bookingSchema = new mongoose.Schema({
     specialRequests: {
         type: String,
         trim: true
+    },
+    created_at: { 
+        type: Date, 
+        default: Date.now
     }
 });
 
