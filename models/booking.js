@@ -1,3 +1,7 @@
+/**
+ * Användarschema för bokning
+ */
+
 const mongoose = require("mongoose");
 
 //Användarschema

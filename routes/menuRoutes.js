@@ -1,13 +1,17 @@
+/**
+ * Skyddade ruttter för meny
+ */
+
 const express = require("express");
 const router = express.Router();
 const MenuItem = require("../models/menuItem");
-const xss = require('xss-clean');
+const xss = require("xss-clean");
 
 //Sanera inkommande data
 router.use(xss());
 
 //Hämta alla menyobjekt
-router.get('/', async (req, res) => {
+router.get("/", async (req, res) => {
     try {
         let items = await MenuItem.find();
 
@@ -18,7 +22,7 @@ router.get('/', async (req, res) => {
 });
 
 //Lägg till ett nytt menyobjekt
-router.post('/', async (req, res) => {
+router.post("/", async (req, res) => {
     try {
         let result = await MenuItem.create(req.body);
 
@@ -29,7 +33,7 @@ router.post('/', async (req, res) => {
 });
 
 //Ändra ett menyobjekt
-router.put('/:id', async (req, res) => {
+router.put("/:id", async (req, res) => {
     try {
         const result = await MenuItem.findByIdAndUpdate(req.params.id, req.body, {
             new: true
@@ -46,7 +50,7 @@ router.put('/:id', async (req, res) => {
 });
 
 //Ta bort ett menyobjekt
-router.delete('/:id', async (req, res) => {
+router.delete("/:id", async (req, res) => {
     try {
         const deletedItem = await MenuItem.findByIdAndDelete(req.params.id);
 

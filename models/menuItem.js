@@ -1,3 +1,7 @@
+/**
+ * Användarschema meny
+ */
+
 const mongoose = require("mongoose");
 
 //Användarschema

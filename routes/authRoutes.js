@@ -1,5 +1,5 @@
 /**
- * Rutter för autentisering
+ * Rutter för registrering, login och autentisering
  */
 
 const express = require("express");

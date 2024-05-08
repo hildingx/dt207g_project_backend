@@ -1,9 +1,9 @@
 //Importera nödvändiga moduler
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
+const express = require("express");
+const mongoose = require("mongoose");
+const cors = require("cors");
 const jwt = require("jsonwebtoken");
-const xss = require('xss-clean');
+const xss = require("xss-clean");
 require("dotenv").config();
 
 //Modeller
@@ -60,7 +60,7 @@ function authenticateToken(req, res, next) {
     if (token == null) return res.status(401).json({ message: "Not authorized for this route. Token missing. "});
 
     jwt.verify(token, process.env.JWT_SECRET_KEY, (err, decodedToken) => {
-        if (err) return res.status(403).json({ message: "Invalid JWT. "});
+        if (err) return res.status(403).json({ message: "Invalid or expired JWT. "});
 
         //Om token giltig, extrahera användarnamnet från den dekrypterade tokenen
         req.username = decodedToken.username; // Spara användarnamnet från decodedToken
