@@ -3,14 +3,17 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const jwt = require("jsonwebtoken");
+const xss = require('xss-clean');
 require("dotenv").config();
+
+//Modeller
 const MenuItem = require("./models/menuItem");
-//const Booking = require("./models/booking");
+const Booking = require("./models/booking");
 
 //Importera rutter
 const authRoutes = require("./routes/authRoutes");
 const menuRoutes = require("./routes/menuRoutes");
-//const bookingRoutes = require("./routes/bookingRoutes");
+const bookingRoutes = require("./routes/bookingRoutes");
 
 //Init express
 const app = express();
@@ -20,10 +23,13 @@ const port = process.env.PORT || 3000;
 app.use(express.json());
 app.use(cors());
 
+//Sanera inkommande data
+app.use(xss());
+
 //Routes
 app.use("/api", authRoutes);
 app.use("/api/menu", authenticateToken, menuRoutes);
-//app.use("/api", authenticateToken, bookingRoutes);
+app.use("/api/booking", authenticateToken, bookingRoutes);
 
 //Oskyddad meny-route för besökare
 app.get("/api/customermenu", async (req, res) => {
@@ -32,6 +38,17 @@ app.get("/api/customermenu", async (req, res) => {
         res.json(items);
     } catch (error) {
         res.status(500).json({ message: "Serverfel vid hämtning av menyn." });
+    }
+});
+
+//Oskyddad boknings-route för besökare
+app.post("/api/customerbooking", async (req, res) => {
+    try {
+        let items = await Booking.create(req.body);
+
+        return res.json({ message: "Bokningen har lagts till", items });
+    } catch (error) {
+        res.status(400).json({ message: "Kunde inte skapa bokning. "});
     }
 });
 

@@ -9,7 +9,8 @@ router.use(xss());
 //Hämta alla menyobjekt
 router.get('/', async (req, res) => {
     try {
-        const items = await MenuItem.find();
+        let items = await MenuItem.find();
+
         res.json(items);
     } catch (error) {
         res.status(500).json({ message: "Serverfel vid hämtning av meny" });
@@ -18,13 +19,12 @@ router.get('/', async (req, res) => {
 
 //Lägg till ett nytt menyobjekt
 router.post('/', async (req, res) => {
-    const { name, description, price, category } = req.body;
     try {
-        const newItem = new MenuItem({ name, description, price, category });
-        await newItem.save();
-        res.status(201).json(newItem);
+        let result = await MenuItem.create(req.body);
+
+        return res.json({ message: "Menyobjektet har lagts till", items });
     } catch (error) {
-        res.status(400).json({ message: "Kunde inte skapa menyobjekt." });
+        return res.status(400).json({ message: "Kunde inte skapa menyobjektet. "});
     }
 });
 
@@ -39,7 +39,7 @@ router.put('/:id', async (req, res) => {
             return res.status(404).json({ message: "Menyobjektet hittades inte." });
         }
 
-        res.json(result);
+        return res.json({ message: "Menyobjektet har ändrats", items });
     } catch (error) {
         res.status(400).json({ message: "Kunde inte uppdatera menyobjektet. " + error.message });
     }
@@ -47,10 +47,8 @@ router.put('/:id', async (req, res) => {
 
 //Ta bort ett menyobjekt
 router.delete('/:id', async (req, res) => {
-    const { id } = req.params;
-
     try {
-        const deletedItem = await MenuItem.findByIdAndDelete(id);
+        const deletedItem = await MenuItem.findByIdAndDelete(req.params.id);
 
         if (!deletedItem) {
             return res.status(404).json({ message: "Menyobjektet hittades inte och kunde inte tas bort." });
