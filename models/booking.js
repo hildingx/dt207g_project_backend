@@ -22,7 +22,8 @@ const bookingSchema = new mongoose.Schema({
     numberOfPeople: {
         type: Number,
         required: true,
-        min: 1
+        min: 1,
+        set: v => Number(v)
     },
     specialRequests: {
         type: String,
