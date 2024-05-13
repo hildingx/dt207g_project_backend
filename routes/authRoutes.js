@@ -12,6 +12,11 @@ require("dotenv").config();
 //Användarmodell
 const User = require("../models/user.js");
 
+//Skyddad route
+router.get("/protected", (req, res) => {
+    res.json({ message: "Skyddad route. " });
+});
+
 //Lägg till ny användare
 router.post("/register", async (req, res) => {
     try {
