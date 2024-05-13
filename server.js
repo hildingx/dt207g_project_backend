@@ -52,6 +52,11 @@ app.post("/api/customerbooking", async (req, res) => {
     }
 });
 
+//Skyddad route
+app.get("/protected", authenticateToken, (req, res) => {
+    res.json({ message: "Skyddad route. " });
+});
+
 //Middleware för att validera token
 function authenticateToken(req, res, next) {
     const authHeader = req.headers['authorization'];
