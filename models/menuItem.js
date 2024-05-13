@@ -22,7 +22,7 @@ const menuItemSchema = new mongoose.Schema({
     },
     category: {
         type: String,
-        enum: ['starter', 'main course', 'dessert', 'drink'],
+        enum: ["starter", "main course", "dessert", "drink"],
         required: true,
         trim: true
     },

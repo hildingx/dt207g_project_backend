@@ -23,7 +23,7 @@ router.get('/', async (req, res) => {
 //Lägg till ny bokning
 router.post('/', async (req, res) => {
     try {
-        let result = await Booking.create(req.body);
+        let items = await Booking.create(req.body);
 
         return res.json({ message: "Bokningen har lagts till", items });
     } catch (error) {
@@ -34,15 +34,15 @@ router.post('/', async (req, res) => {
 //Ändra bokning
 router.put('/:id', async (req, res) => {
     try {
-        const result = await Booking.findByIdAndUpdate(req.params.id, req.body, {
+        const items = await Booking.findByIdAndUpdate(req.params.id, req.body, {
             new: true
         });
 
-        if (!result) {
+        if (!items) {
             return res.status(404).json({ message: "Bokningen hittades inte." });
         }
 
-        return res.json({ message: "Bokningen har ändrats", result });
+        return res.json({ message: "Bokningen har ändrats", items });
     } catch (error) {
         res.status(400).json({ message: "Kunde inte uppdatera bokningen. " + error.message });
     }
@@ -51,9 +51,9 @@ router.put('/:id', async (req, res) => {
 //Ta bort ett menyobjekt
 router.delete('/:id', async (req, res) => {
     try {
-        const result = await Booking.findByIdAndDelete(req.params.id);
+        const items = await Booking.findByIdAndDelete(req.params.id);
 
-        if (!result) {
+        if (!items) {
             return res.status(404).json({ message: "Bokningen hittades inte och kunde inte tas bort." });
         }
 
