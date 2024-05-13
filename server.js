@@ -53,7 +53,7 @@ app.post("/api/customerbooking", async (req, res) => {
 });
 
 //Skyddad route
-app.get("/protected", authenticateToken, (req, res) => {
+app.get("/api/protected", authenticateToken, (req, res) => {
     res.json({ message: "Skyddad route. " });
 });
 
